@@ -5,7 +5,7 @@
 課程名稱   | 視窗程式設計 (使用 electron.js)
 學員姓名   | 
 教師姓名   | 陳鍾誠
-上課教材   | [wiki](wiki)
+上課教材   | [wiki](../../wiki)
 練習作業   | [exercise](exercise)
 專案作品   | [project](project)
 學習筆記   | [note](note)
