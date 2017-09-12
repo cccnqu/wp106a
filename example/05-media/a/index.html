@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>影片播放</title>
+</head>
+<body>
+<script>
+</script>
+<script>
+function OpenFile() {
+  const {dialog} = require('electron').remote
+  var file = dialog.showOpenDialog(
+      function (fileName) {
+        if(fileName === undefined){
+            alert("No file selected")
+            return
+        }
+        var filePath = document.getElementById('filePath') 
+        filePath.innerText = fileName
+        var videoControl = document.getElementById('videoControl')
+        videoControl.setAttribute("src", fileName)
+      }
+    )
+  console.log('file=' , file)
+}
+</script>
+  <button onclick="OpenFile()">OpenFile</button>
+  <label id="filePath"></label><br/>
+  <video id="videoControl" style="width:100%; height:80vh" controls>
+  您的瀏覽器不支援此 HTML5 影片標籤
+  </video>
+</body>
+</html>
