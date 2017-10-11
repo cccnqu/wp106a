@@ -1,0 +1,87 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+      #frame{
+        width:600px;height:100px;
+        border:solid black 2px;    
+      }
+      #runtime{position:absolute;
+               left:330px;
+               top:90px;}
+    </style>
+    <title>行事曆</title>
+</head>
+<body>
+<b id="nowtime"></b>
+<div id ="frame">
+<label for="date">事情</label>
+<input type="text" id="date">
+<label for="bookdate">日期</label>
+<input type="date" id="bookdate" placeholder="2014-09-18">
+<label for="settime">時間</label>
+<input type="time" id="settime">
+<button onclick="setdate()">設定</button><br>
+<p>建議設定日期只要選這個月的就好</p>
+  <label id="runtime">剩餘時間</label>
+<div>
+
+<script>
+var matchtime
+var DATE
+var counter
+function newdate(){
+  counter ++
+}
+
+function setdate(){
+  var date = document.getElementById("date")
+  var bookdate = document.getElementById("bookdate")
+  var settime = document.getElementById("settime")
+  var bookdateR = bookdate.value.replace(/-/g,"/")
+  var settimeR = settime.value +":"+ "00"
+  matchtime = bookdateR +" "+ settimeR
+  DATE = date.value
+  leftdays = parseFloat(bookdateR.slice(8,10))-days
+  lefthours = parseFloat(settimeR.slice(0,2))-hours
+  leftminutes = parseFloat(settimeR.slice(3,5))-minutes-1
+  leftseconds = 60-parseFloat(seconds)
+  lefttime = leftdays*86400+lefthours*3600+leftminutes*60+leftseconds
+  runtime.innerHTML = lefttime
+}
+
+function lpad(s, len) {
+  var spad = "0000000000000000000" + s
+  return spad.substring(spad.length - len)
+}
+
+var runtime = document.getElementById("runtime")
+var hours 
+var minutes 
+var seconds
+var days 
+
+function printTime() {
+  var d = new Date()
+  var years = d.getFullYear()
+  var months = lpad((d.getMonth()+1),2)
+  days = lpad(d.getDate(),2)
+  hours = lpad(d.getHours(), 2)
+  minutes = lpad(d.getMinutes(), 2)
+  seconds = lpad(d.getSeconds(), 2)
+  nowtime.innerText ="現在時間:"+years+'/'+months+'/'+days+' '+ hours + ':' + minutes + ':' + seconds
+  var NOWTIME = years+'/'+months+'/'+days+' '+ hours + ':' + minutes + ':' + seconds
+  if(NOWTIME==matchtime) {
+    alert(date.value)
+    runtime.innerHTML = "剩餘時間"
+  }else{
+    if(runtime.innerHTML!=="剩餘時間" ){runtime.innerHTML--}
+   }
+  setTimeout(printTime, 1000); 
+}
+
+setTimeout(printTime, 1000);
+</script>
+</body> 
+</html>
