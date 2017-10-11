@@ -6,7 +6,7 @@
 
 1. 請先安裝好 electron.js 的執行環境。
 	* 先安裝 node.js -- https://nodejs.org/en/
-	* npm install electron --save-dev --save-exact
+	* npm install -g electron
 2. 想要執行哪個專案，就打下列指令
 	* 指令： electron 《專案路徑》
 	* 範例： electron 01-hello/a
