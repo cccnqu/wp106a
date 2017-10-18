@@ -11,7 +11,7 @@ function newFile() {
 function saveFileAs() {
   var text = document.getElementById('text')
   dialog.showSaveDialog({ 
-    filters: [ { name: 'text', extensions: ['txt'] } ]}, 
+    filters: [ { name: 'any', extensions: ['*'] }, { name: 'text', extensions: ['txt'] } ]}, 
     function (fileName) {
       if (fileName === undefined) return;          
       fs.writeFile(fileName, text.value, function (err) {
