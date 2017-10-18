@@ -1,5 +1,40 @@
 const {Menu, dialog} = require('electron').remote
 const fs = require('fs')
+const marked = require('marked')
+let E = module.exports = {}
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+});
+
+var mdHtml = document.getElementById('mdHtml')
+
+var mdSource = document.getElementById('mdSource')
+
+E.render = function render() {
+//  var text =c
+//  var mdHtml = document.getElementById('mdHtml')
+//  console.log('text.value=', text)
+  mdHtml.innerHTML = marked(mdSource.value)
+}
+
+E.viewSource = function viewSource() {
+  mdSource.style.display = "block"
+  mdHtml.style.display = "none"
+}
+
+E.viewHtml = function viewHtml() {
+  E.render()
+  mdSource.style.display = "none"
+  mdHtml.style.display = "block"
+}
 
 function newFile() {
   var filePath = document.getElementById('filePath')
@@ -79,6 +114,19 @@ const template = [
       { label: 'Exit', role: 'close' }
     ]
   },
+/*  {
+    label: 'Markdown',
+    submenu: [
+      {
+        label: '原始碼',
+        click: viewSource
+      },      
+      {
+        label: '預覽',
+        click: viewHtml
+      }
+    ]
+  },*/
   {
     label: 'Edit',
     submenu: [
