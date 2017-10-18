@@ -157,7 +157,6 @@ function handleLoadCommit() {
   document.querySelector('#location').value = webview.getURL();
   document.querySelector('#back').disabled = !webview.canGoBack();
   document.querySelector('#forward').disabled = !webview.canGoForward();
-  closeBoxes();
 }
 
 function handleLoadStart(event) {
@@ -227,33 +226,3 @@ function decreaseZoom() {
   });
 }
 
-function openZoomBox() {
-  document.querySelector('webview').getZoom(function(zoomFactor) {
-    var zoomText = document.forms['zoom-form']['zoom-text'];
-    zoomText.value = Number(zoomFactor.toFixed(6)).toString();
-    document.querySelector('#zoom-box').style.display = '-webkit-flex';
-    zoomText.select();
-  });
-}
-
-function closeZoomBox() {
-  document.querySelector('#zoom-box').style.display = 'none';
-}
-
-function openFindBox() {
-  document.querySelector('#find-box').style.display = 'block';
-  document.forms['find-form']['find-text'].select();
-}
-
-function closeFindBox() {
-  var findBox = document.querySelector('#find-box');
-  findBox.style.display = 'none';
-  findBox.style.left = "";
-  findBox.style.opacity = "";
-  document.querySelector('#find-results').innerText= "";
-}
-
-function closeBoxes() {
-  closeZoomBox();
-  closeFindBox();
-}
