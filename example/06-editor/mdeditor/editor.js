@@ -1,4 +1,6 @@
-const {Menu, dialog} = require('electron').remote
+const remote = require('electron').remote
+const {Menu, dialog, shell} = remote
+const win = remote.getCurrentWindow()
 const fs = require('fs')
 const marked = require('marked')
 let E = module.exports = {}
@@ -14,9 +16,16 @@ marked.setOptions({
   smartypants: false
 })
 
-var mdHtml = document.getElementById('mdHtml')
-var mdSource = document.getElementById('mdSource')
-var filePath = document.getElementById('filePath')
+var mdHtml, mdSource, filePath
+
+window.addEventListener('load', function () {
+  mdHtml = document.getElementById('mdHtml')
+  mdSource = document.getElementById('mdSource')
+  filePath = document.getElementById('filePath')
+//  win.loadURL('http://tw.youtube.com')
+//  win.webContents.goBack()
+//  shell.openExternal('http://tw.youtube.com')
+})
 
 E.render = function render () {
   mdHtml.innerHTML = marked(mdSource.value)
@@ -33,22 +42,32 @@ E.viewHtml = function () {
   mdHtml.style.display = 'block'
 }
 
+E.goBack = function () {
+//  win.webContents.goBack()
+//  console.log('E.goBack()')
+//  require('electron').remote.getCurrentWindow().webContents.goBack()
+  window.history.back()
+}
+
 function newFile () {
   filePath.innerText = ''
   mdSource.value = ''
 }
 
 function saveFileAs () {
-  dialog.showSaveDialog({
-    filters: [ { name: 'all', extensions: [ '*' ] }, { name: 'text', extensions: [ 'txt' ] } ], 
+  dialog.showSaveDialog(
+    {
+      filters: [ { name: 'all', extensions: [ '*' ] }, { name: 'text', extensions: [ 'txt' ] } ]
+    },
     function (fileName) {
       if (fileName === undefined) return
+      filePath.innerText = fileName
       fs.writeFile(fileName, mdSource.value, function (err) {
+        if (err) { window.alert('error=' + err); return }
         dialog.showMessageBox({ message: '儲存完畢！', buttons: ['OK'] })
       })
-      filePath.innerText = fileName
     }
-  })
+  )
 }
 
 function openFile () {
@@ -62,7 +81,7 @@ function openFile () {
 
       filePath.innerText = fileName
       fs.readFile(fileName.toString(), 'utf8', function (err, data) {
-        if (err) window.alert('read fail!')
+        if (err) { window.alert('read fail!'); return }
         mdSource.value = data
       })
     }
@@ -75,7 +94,10 @@ function saveFile () {
   if (fileName.trim().length === 0) {
     saveFileAs()
   }
-  fs.writeFile(fileName, mdSource.value)
+  fs.writeFile(fileName, mdSource.value, function (err) {
+    if (err) { window.alert('Save Fail!'); return }
+    window.alert('Save Success!')
+  })
 }
 
 const template = [
@@ -126,6 +148,10 @@ const template = [
       {
         label: '預覽',
         click: E.viewHtml
+      },
+      {
+        label: 'GoBack',
+        click: E.goBack
       },
       { role: 'reload' },
       { role: 'toggledevtools' },

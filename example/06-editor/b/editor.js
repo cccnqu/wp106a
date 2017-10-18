@@ -10,12 +10,15 @@ function newFile() {
 
 function saveFileAs() {
   var text = document.getElementById('text')
-  dialog.showSaveDialog({ 
-    filters: [ { name: 'any', extensions: ['*'] }, { name: 'text', extensions: ['txt'] } ]}, 
+  dialog.showSaveDialog(
+    {
+      filters: [ { name: 'any', extensions: ['*'] }, { name: 'text', extensions: ['txt'] } ]
+    },
     function (fileName) {
-      if (fileName === undefined) return;          
+      if (fileName === undefined) return
       fs.writeFile(fileName, text.value, function (err) {
-        dialog.showMessageBox({ message: "儲存完畢！", buttons: ["OK"] })
+        if (err) { window.alert('writeFile Fail!'); return }
+        dialog.showMessageBox({ message: '儲存完畢！', buttons: ['OK'] })
       })
       var filePath = document.getElementById('filePath')
       filePath.innerText = fileName

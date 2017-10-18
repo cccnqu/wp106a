@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, MenuItem, dialog} = require('electron')
+const {app, BrowserWindow, Menu, MenuItem, dialog, session} = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -7,6 +7,17 @@ const url = require('url')
 let win
 
 function createWindow () {
+  const ses = session.defaultSession
+/*    
+  ses.webRequest.onBeforeRequest((details, callback) => {
+    if (details.url.startsWith('http')) { // cancel the request
+      callback({ cancel: true })
+    } else { // let the request happen
+      callback({})
+    }
+  })
+*/    
+
   // Create the browser window.
   win = new BrowserWindow({width: 800, height: 600})
 //  win.setMenu(null)
