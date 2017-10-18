@@ -5,6 +5,8 @@
   <title>編輯器</title>
 </head>
 <body>
+  <button onclick="E.viewHtml()">View</button>
+  <button onclick="E.viewSource()">Source</button>
   <label id="filePath"></label><br/>
   <textarea id="mdSource" style="width:100%; height:80vh">
 # 陳鍾誠的課程
@@ -29,7 +31,5 @@
   <script>
     var E = require('./editor')
   </script>
-  <button onclick="E.viewHtml()">View</button>
-  <button onclick="E.viewSource()">Source</button>
 </body>
 </html>

@@ -12,52 +12,46 @@ marked.setOptions({
   sanitize: false,
   smartLists: true,
   smartypants: false
-});
+})
 
 var mdHtml = document.getElementById('mdHtml')
-
 var mdSource = document.getElementById('mdSource')
+var filePath = document.getElementById('filePath')
 
-E.render = function render() {
-//  var text =c
-//  var mdHtml = document.getElementById('mdHtml')
-//  console.log('text.value=', text)
+E.render = function render () {
   mdHtml.innerHTML = marked(mdSource.value)
 }
 
-E.viewSource = function viewSource() {
-  mdSource.style.display = "block"
-  mdHtml.style.display = "none"
+E.viewSource = function () {
+  mdSource.style.display = 'block'
+  mdHtml.style.display = 'none'
 }
 
-E.viewHtml = function viewHtml() {
+E.viewHtml = function () {
   E.render()
-  mdSource.style.display = "none"
-  mdHtml.style.display = "block"
+  mdSource.style.display = 'none'
+  mdHtml.style.display = 'block'
 }
 
-function newFile() {
-  var filePath = document.getElementById('filePath')
+function newFile () {
   filePath.innerText = ''
-  var text = document.getElementById('text')
-  text.value = ''
+  mdSource.value = ''
 }
 
-function saveFileAs() {
-  var text = document.getElementById('text')
-  dialog.showSaveDialog({ 
-    filters: [ { name: 'text', extensions: ['txt'] } ]}, 
+function saveFileAs () {
+  dialog.showSaveDialog({
+    filters: [ { name: 'all', extensions: [ '*' ] }, { name: 'text', extensions: [ 'txt' ] } ], 
     function (fileName) {
-      if (fileName === undefined) return;          
-      fs.writeFile(fileName, text.value, function (err) {
-        dialog.showMessageBox({ message: "儲存完畢！", buttons: ["OK"] })
+      if (fileName === undefined) return
+      fs.writeFile(fileName, mdSource.value, function (err) {
+        dialog.showMessageBox({ message: '儲存完畢！', buttons: ['OK'] })
       })
-      var filePath = document.getElementById('filePath')
       filePath.innerText = fileName
-    })
+    }
+  })
 }
 
-function openFile() {
+function openFile () {
   dialog.showOpenDialog(
     function (fileName) {
       if (fileName === undefined) {
@@ -66,25 +60,22 @@ function openFile() {
       }
       console.log('fileName=' + fileName)
 
-      var filePath = document.getElementById('filePath')
       filePath.innerText = fileName
       fs.readFile(fileName.toString(), 'utf8', function (err, data) {
         if (err) window.alert('read fail!')
-        var text = document.getElementById('text')
-        text.value = data
+        mdSource.value = data
       })
     }
   )
 }
 
-function saveFile() {
-  var fileName = document.getElementById('filePath').innerText
+function saveFile () {
+  var fileName = filePath.innerText
 //          if (fileName.trim().length === 0) window.alert('No file loaded!')
   if (fileName.trim().length === 0) {
     saveFileAs()
   }
-  var text = document.getElementById('text')
-  fs.writeFile(fileName, text.value)
+  fs.writeFile(fileName, mdSource.value)
 }
 
 const template = [
@@ -95,7 +86,7 @@ const template = [
         label: '開新檔案',
         accelerator: 'CmdOrCtrl+N',
         click: newFile
-      },      
+      },
       {
         label: 'Open',
         accelerator: 'CmdOrCtrl+O',
@@ -114,19 +105,6 @@ const template = [
       { label: 'Exit', role: 'close' }
     ]
   },
-/*  {
-    label: 'Markdown',
-    submenu: [
-      {
-        label: '原始碼',
-        click: viewSource
-      },      
-      {
-        label: '預覽',
-        click: viewHtml
-      }
-    ]
-  },*/
   {
     label: 'Edit',
     submenu: [
@@ -141,6 +119,14 @@ const template = [
   {
     label: 'View',
     submenu: [
+      {
+        label: '原始碼',
+        click: E.viewSource // viewSource
+      },
+      {
+        label: '預覽',
+        click: E.viewHtml
+      },
       { role: 'reload' },
       { role: 'toggledevtools' },
       { type: 'separator' },
