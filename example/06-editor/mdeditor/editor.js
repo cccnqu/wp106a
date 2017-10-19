@@ -1,6 +1,6 @@
 const remote = require('electron').remote
-const {Menu, dialog, shell} = remote
-const win = remote.getCurrentWindow()
+const {Menu, MenuItem, dialog} = remote
+// const win = remote.getCurrentWindow()
 const fs = require('fs')
 const marked = require('marked')
 let E = module.exports = {}
@@ -16,19 +16,36 @@ marked.setOptions({
   smartypants: false
 })
 
-var mdHtml, mdSource, filePath
+var mdHtml, mdSource, filePath, fileHistory = [], fileHistoryMenu
 
 window.addEventListener('load', function () {
   mdHtml = document.getElementById('mdHtml')
   mdSource = document.getElementById('mdSource')
-  filePath = document.getElementById('filePath')
-//  win.loadURL('http://tw.youtube.com')
-//  win.webContents.goBack()
-//  shell.openExternal('http://tw.youtube.com')
+//  filePath = document.getElementById('filePath')
+  filePath = document.querySelector('title')
+
+  fileHistoryMenu = new Menu()
+  window.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    fileHistoryMenu.popup(remote.getCurrentWindow())
+  }, false)
+  loadFile('test.md')
 })
 
 E.render = function render () {
   mdHtml.innerHTML = marked(mdSource.value)
+  mdHtml.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', function (event) {
+      event.preventDefault()
+      let href = a.getAttribute('href')
+      if (a.href.startsWith('file:///')) {
+//        window.alert('a.href=' + a.href)
+        loadFile(a.href.substring('file:///'.length))
+      } else {
+//        window.alert('href=' + href)
+      }
+    })
+  })
 }
 
 E.viewSource = function () {
@@ -40,13 +57,6 @@ E.viewHtml = function () {
   E.render()
   mdSource.style.display = 'none'
   mdHtml.style.display = 'block'
-}
-
-E.goBack = function () {
-//  win.webContents.goBack()
-//  console.log('E.goBack()')
-//  require('electron').remote.getCurrentWindow().webContents.goBack()
-  window.history.back()
 }
 
 function newFile () {
@@ -78,14 +88,34 @@ function openFile () {
         return
       }
       console.log('fileName=' + fileName)
-
-      filePath.innerText = fileName
-      fs.readFile(fileName.toString(), 'utf8', function (err, data) {
-        if (err) { window.alert('read fail!'); return }
-        mdSource.value = data
-      })
+      loadFile(fileName)
     }
   )
+}
+
+function loadFile (fileName) {
+  filePath.innerText = fileName
+
+  if (fileHistory.indexOf(fileName) < 0) {
+    fileHistory.push(fileName)
+    fileHistoryMenu.append(
+      new MenuItem(
+        {
+          label: fileName,
+          click () {
+            loadFile(fileName)
+            E.viewHtml()
+          }
+        }
+      )
+    )
+  }
+  fs.readFile(fileName.toString(), 'utf8', function (err, data) {
+    if (err) { window.alert('read fail!'); return }
+    console.log('mdSource.value = ', data)
+    mdSource.value = data
+    E.viewHtml()
+  })
 }
 
 function saveFile () {

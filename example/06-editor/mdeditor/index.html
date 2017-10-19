@@ -2,14 +2,29 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>編輯器</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title></title>
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-  <button onclick="E.viewHtml()">View</button>
-  <button onclick="E.viewSource()">Source</button>
-  <label id="filePath"></label><br/>
-  <textarea id="mdSource" style="width:95%; height:80vh">
+  <ul class="topnav">
+    <li><a href="#home">Home</a></li> <!-- class="active" -->
+    <li><a onclick="E.viewHtml()">View</a></li>
+    <li><a onclick="E.viewSource()">Source</a></li>
+    <li class="right"><a href="#about">About</a></li>
+  </ul>        
+  <textarea id="mdSource" style="width:95%; height:80vh"></textarea>
+  <div id="mdHtml">
+    mdHtml
+  </div>  
+  <script>
+    var E = require('./editor')
+  </script>
+</body>
+</html>
+
+<!--
+
 # 陳鍾誠的課程
 
 欄位       |  內容
@@ -25,12 +40,9 @@
 專案作品   | [project](project)
 學習筆記   | [wiki](../../wiki)
 疑問解答   | [issue](https://github.com/cccnqu/wp106a/issues)    
-  </textarea>
-  <div id="mdHtml">
-    mdHtml
-  </div>
-  <script>
-    var E = require('./editor')
-  </script>
-</body>
-</html>
+README    | [README](README.md)
+
+* [../README](../README.md)
+
+
+-->  
