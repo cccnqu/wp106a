@@ -6,8 +6,5 @@ test    | [test](test.md)
 README    | [README](README.md)
 ../README    | [../README](../README.md)
 
-xxxx
-
-ddd
 
 

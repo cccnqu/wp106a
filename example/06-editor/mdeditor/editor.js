@@ -23,14 +23,26 @@ window.addEventListener('load', function () {
   mdSource = document.getElementById('mdSource')
 //  filePath = document.getElementById('filePath')
   filePath = document.querySelector('title')
-
-  fileHistoryMenu = new Menu()
+  fileHistoryMenu = document.getElementById('fileHistoryMenu')
+  fileHistoryMenu.addEventListener('change', function () {
+    loadFile(fileHistoryMenu.value)
+    E.viewHtml()
+  })
+/*
+//  fileHistoryMenu = new Menu()
   window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
-    fileHistoryMenu.popup(remote.getCurrentWindow())
+    // fileHistoryMenu.popup(remote.getCurrentWindow())
+    remote.app.fileHistoryMenu.popup(remote.getCurrentWindow())
   }, false)
+*/
   loadFile('test.md')
 })
+
+E.help = function () {
+  loadFile(__dirname + '/help.md')
+  E.viewHtml()
+}
 
 E.render = function render () {
   mdHtml.innerHTML = marked(mdSource.value)
@@ -39,8 +51,9 @@ E.render = function render () {
       event.preventDefault()
       let href = a.getAttribute('href')
       if (a.href.startsWith('file:///')) {
-//        window.alert('a.href=' + a.href)
         loadFile(a.href.substring('file:///'.length))
+      } else if (a.href.indexOf('://') < 0) {
+        loadFile(a.href)
       } else {
 //        window.alert('href=' + href)
       }
@@ -95,10 +108,16 @@ function openFile () {
 
 function loadFile (fileName) {
   filePath.innerText = fileName
-
   if (fileHistory.indexOf(fileName) < 0) {
     fileHistory.push(fileName)
-    fileHistoryMenu.append(
+    let addOption = document.createElement('option')
+    addOption.text = fileName
+    addOption.value = fileName
+    fileHistoryMenu.appendChild(addOption)
+// 注意：下列這段不能加，否則會因為無法從 main (remote) 呼叫 renderer 而導致失敗！
+// 因為 fileHistoryMenu 是 new Menu() 建立的，屬於 main (remote) process .
+/*
+    remote.app.fileHistoryMenu.append(
       new MenuItem(
         {
           label: fileName,
@@ -109,7 +128,9 @@ function loadFile (fileName) {
         }
       )
     )
+*/
   }
+  fileHistoryMenu.value = fileName
   fs.readFile(fileName.toString(), 'utf8', function (err, data) {
     if (err) { window.alert('read fail!'); return }
     console.log('mdSource.value = ', data)
@@ -199,11 +220,14 @@ const template = [
       { role: 'minimize' },
       { role: 'close' }
     ]
-  },
+  }
+/*  
+  ,
   {
     role: 'help',
     submenu: [ { label: 'Learn More' } ]
   }
+*/
 ]
 
 const menu = Menu.buildFromTemplate(template)

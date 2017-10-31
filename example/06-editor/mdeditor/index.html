@@ -8,15 +8,14 @@
 </head>
 <body>
   <ul class="topnav">
-    <li><a href="#home">Home</a></li> <!-- class="active" -->
+<!--    <li><a href="#home">Home</a></li> -->
     <li><a onclick="E.viewHtml()">View</a></li>
     <li><a onclick="E.viewSource()">Source</a></li>
-    <li class="right"><a href="#about">About</a></li>
-  </ul>        
+    <li class="right"><a onclick="E.help()">Help</a></li>
+  </ul>
+  <select id="fileHistoryMenu" style="width:100%"></select>
   <textarea id="mdSource" style="width:95%; height:80vh"></textarea>
-  <div id="mdHtml">
-    mdHtml
-  </div>  
+  <div id="mdHtml"></div>
   <script>
     var E = require('./editor')
   </script>
