@@ -20,7 +20,7 @@ var mdHtml, mdSource, filePath, fileHistory = [], fileHistoryMenu
 
 window.addEventListener('load', function () {
   mdHtml = document.getElementById('mdHtml')
-  mdSource = document.getElementById('mdSource')
+  mdSource = document.getElementById('mdSource')  
 //  filePath = document.getElementById('filePath')
   filePath = document.querySelector('title')
   fileHistoryMenu = document.getElementById('fileHistoryMenu')
@@ -36,7 +36,7 @@ window.addEventListener('load', function () {
     remote.app.fileHistoryMenu.popup(remote.getCurrentWindow())
   }, false)
 */
-  loadFile('test.md')
+  loadFile(__dirname + '/test.md')
 })
 
 E.help = function () {
