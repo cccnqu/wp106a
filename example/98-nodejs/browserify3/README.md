@@ -17,7 +17,7 @@ marked = require('marked')
 然後用下列指令：
 
 ```
-$ browserify markedMain.js -o web/marked.js
+$ browserify markedMain.js -o marked.js
 ```
 
 接著在 HTML 內用下列語法引入：
