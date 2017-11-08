@@ -2,10 +2,10 @@
 
 ```
 $ npm install -g browserify
-$ browserify uniqNode.js -o web/uniq.js
+$ browserify main.js -o bundle.js
 ```
 
-web/uniq.js 將會是瀏覽器可以直接引用的檔案！
+bundle.js 將會是瀏覽器可以直接引用的檔案！
 
 若要讓某個模組可以在瀏覽器內全域使用，應該使用全域變數引用該模組！
 
