@@ -23,7 +23,7 @@ $ browserify markedMain.js -o marked.js
 接著在 HTML 內用下列語法引入：
 
 ```html
-<script src="web/marked.js">
+<script src="marked.js"></script>
 
 ```
 
