@@ -25,6 +25,11 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
+  // Show window when page is ready
+  win.once('ready-to-show', function () {
+    win.show()
+  })
 }
 
 // This method will be called when Electron has finished
