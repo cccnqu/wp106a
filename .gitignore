@@ -12,6 +12,12 @@ bak
 # node 
 node_modules
 
+# cordova
+plugins
+platforms
+hooks
+res
+
 # database
 db
 
